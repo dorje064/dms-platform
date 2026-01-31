@@ -2,7 +2,19 @@
   "name": "@dms-platform/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx dev web",
+    "dev:web": "nx dev web",
+    "build": "nx build web",
+    "build:web": "nx build web",
+    "start": "nx start web",
+    "start:web": "nx start web",
+    "test:e2e": "nx e2e web-e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "graph": "nx graph",
+    "clean": "nx reset"
+  },
   "private": true,
   "devDependencies": {
     "@nx/devkit": "22.4.4",
