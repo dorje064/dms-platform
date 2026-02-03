@@ -201,7 +201,7 @@ export default function DonorsPage() {
         </div>
 
         {/* Donors Table */}
-        <div className="glass-card">
+        <div>
           <div className="table-header-section">
             <div>
               <h3 className="table-title">All Donors</h3>
