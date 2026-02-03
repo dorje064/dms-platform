@@ -95,57 +95,6 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* Objectives - Education */}
-        <section className="mb-large">
-          <div className="glass-card">
-            <div className="text-center mb-6">
-              <span className="subtitle">Core Mission</span>
-              <h2 className="section-title">Supporting Education & Community</h2>
-            </div>
-
-            <div className="grid-3 gap-6">
-              {/* Regions */}
-              <div className="glass-card-dark">
-                <h3 className="card-title-light">Focus Regions</h3>
-                <ul className="list-simple-light">
-                  {['Yultsho Dhun', 'Drukchu Lung', 'Nyin', 'Chang', 'Limi', 'Bhalu-Drukpa (Shi, Sum, Chungnyi)'].map((r) => (
-                    <li key={r}>{r}</li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Aid Type */}
-              <div className="glass-card-dark highlight-card">
-                <div className="icon-circle">
-                  <span>🎓</span>
-                </div>
-                <h3 className="card-title-light">Educational Support</h3>
-                <p className="text-sm-light mb-4">
-                  Providing modest yet meaningful financial assistance to students pursuing:
-                </p>
-                <ul className="list-bullets-light">
-                  <li>+2 (10+2) Education</li>
-                  <li>Bachelor-level Education</li>
-                </ul>
-                <p className="region-note">
-                  Within Nepal
-                </p>
-              </div>
-
-              {/* Cultural Goals */}
-              <div className="glass-card-dark">
-                <h3 className="card-title-light">Beyond Finance</h3>
-                <p className="text-sm-light mb-4">DMS also works to:</p>
-                <ul className="list-icons-light">
-                  <li><span>☸</span> Serve the Dharma</li>
-                  <li><span>🏛</span> Preserve Culture</li>
-                  <li><span>🤝</span> Strengthen Unity</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Focus Regions with Images */}
         <section className="mb-large">
           <div className="glass-card">
