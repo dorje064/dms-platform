@@ -15,7 +15,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar glass-effect">
+    <nav className="navbar">
       <div className="container nav-container">
         <div className="logo-group">
           <div className="logo-wrapper">
