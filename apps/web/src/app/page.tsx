@@ -126,7 +126,7 @@ export default function Page() {
           </div>
 
           <div className="text-center mt-large">
-            <a href="#all-donors" className="btn btn-outline">View All Donors</a>
+            <a href="/donors" className="btn btn-outline">View All Donors</a>
           </div>
         </div>
       </section>
