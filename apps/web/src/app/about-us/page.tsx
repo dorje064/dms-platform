@@ -33,35 +33,38 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* Our Community */}
+        {/* Our Team */}
         <section className="mb-large">
           <div className="glass-card">
-            <h2 className="section-title mb-4 text-center">Our Community</h2>
-            <p className="text-center section-description mb-6">
-              Meet the dedicated members who make DMS a thriving community of compassion and support.
+            <h2 className="section-title mb-4 text-center">Our Team</h2>
+            <p className="text-center section-description mb-8">
+              Meet the dedicated team members leading DMS with compassion and commitment.
             </p>
 
-            <div className="community-grid">
+            <div className="team-grid">
               {[
-                { id: 1, name: "Community Group", role: "Members", image: "/images/community-1.jpg" },
-                { id: 2, name: "Youth Committee", role: "Student Support", image: "/images/community-2.jpg" },
-                { id: 3, name: "Leadership Team", role: "Governance", image: "/images/community-3.jpg" },
-                { id: 4, name: "Cultural Preservation", role: "Dharma & Tradition", image: "/images/community-1.jpg" },
-                { id: 5, name: "Event Organizers", role: "Gatherings", image: "/images/community-2.jpg" },
-                { id: 6, name: "Support Network", role: "Community Care", image: "/images/community-3.jpg" },
+                { id: 1, name: "Tenzin Dorje", role: "President", image: "/images/team-1.jpg" },
+                { id: 2, name: "Lhakpa Sherpa", role: "Vice President", image: "/images/team-2.jpg" },
+                { id: 3, name: "Pema Youdon", role: "Secretary", image: "/images/team-3.jpg" },
+                { id: 4, name: "Sonam Wangdi", role: "Treasurer", image: "/images/team-4.jpg" },
+                { id: 5, name: "Karma Tsering", role: "Youth Coordinator", image: "/images/team-5.jpg" },
+                { id: 6, name: "Dolma Sangmo", role: "Public Relations", image: "/images/team-6.jpg" },
+                { id: 7, name: "Ngawang Rigzin", role: "Cultural Advisor", image: "/images/team-7.jpg" },
+                { id: 8, name: "Tashi Lhamo", role: "Event Manager", image: "/images/team-8.jpg" },
+                { id: 9, name: "Choying Drolma", role: "Community Liaison", image: "/images/team-9.jpg" },
               ].map((member) => (
-                <div key={member.id} className="community-member-card">
-                  <div className="community-image-wrapper">
+                <div key={member.id} className="team-member-card">
+                  <div className="team-avatar-wrapper">
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
                       className="img-cover"
                     />
-                    <div className="community-overlay">
-                      <h4 className="community-name">{member.name}</h4>
-                      <p className="community-role">{member.role}</p>
-                    </div>
+                  </div>
+                  <div className="team-info">
+                    <h4 className="team-name">{member.name}</h4>
+                    <p className="team-role">{member.role}</p>
                   </div>
                 </div>
               ))}
