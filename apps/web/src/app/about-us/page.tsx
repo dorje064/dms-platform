@@ -183,8 +183,8 @@ export default function AboutUsPage() {
                 { id: 4, name: "Sumnina Gurung", role: "Bajura Representative", image: "/images/our-team/team4.jpeg" },
                 { id: 5, name: "Yeshi Sangmo Lama", role: "Limi Representative", image: "/images/our-team/team5.jpeg" },
                 { id: 6, name: "Dickey Choedon Lama", role: "Limi Representative", image: "/images/our-team/team6.jpeg" },
-                { id: 7, name: "Pema Ringjin lama", role: "Namkha Representative", image: "/images/our-team/team7.jpeg" },
-                { id: 8, name: "Pema gyaltsen lama", role: "Namkha Representative", image: "/images/our-team/team8.jpeg" },
+                { id: 7, name: "Pema Ringjin Lama", role: "Namkha Representative", image: "/images/our-team/team7.jpeg" },
+                { id: 8, name: "Pema Gyaltsen Lama", role: "Namkha Representative", image: "/images/our-team/team8.jpeg" },
                 { id: 9, name: "Maan Bahadur Gurung", role: "Bajura Representative", image: "/images/our-team/team9.jpeg" },
               ].map((member) => (
                 <div key={member.id} className="team-member-card">
