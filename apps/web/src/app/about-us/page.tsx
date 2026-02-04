@@ -176,16 +176,16 @@ export default function AboutUsPage() {
             </p>
             <div className="team-grid">
               {[
-                { id: 0, name: "Pema Delek Lama", role: "Founder", image: "/images/our-team/team0.jpeg" },
-                { id: 1, name: "Norbu Tenzing Lama", role: "Coordinator", image: "/images/our-team/team1.jpeg" },
+                { id: 0, name: "Pema Delek", role: "Monastery Representative", image: "/images/our-team/team0.jpeg" },
+                { id: 1, name: "Norbu Tenzing", role: "Coordinator", image: "/images/our-team/team1.jpeg" },
                 { id: 2, name: "Prem Lama", role: "Nyinba Representative", image: "/images/our-team/team2.jpeg" },
-                { id: 3, name: "Sonam Wangmo Lama", role: "Nyinba Representative", image: "/images/our-team/team3.jpeg" },
+                { id: 3, name: "Sonam Wangmo", role: "Nyinba Representative", image: "/images/our-team/team3.jpeg" },
                 { id: 4, name: "Sumnina Gurung", role: "Bajura Representative", image: "/images/our-team/team4.jpeg" },
-                { id: 5, name: "Yeshi Sangmo Lama", role: "Limi Representative", image: "/images/our-team/team5.jpeg" },
-                { id: 6, name: "Dickey Choedon Lama", role: "Limi Representative", image: "/images/our-team/team6.jpeg" },
-                { id: 7, name: "Pema Ringjin Lama", role: "Namkha Representative", image: "/images/our-team/team7.jpeg" },
-                { id: 8, name: "Pema Gyaltsen Lama", role: "Namkha Representative", image: "/images/our-team/team8.jpeg" },
-                { id: 9, name: "Maan Bahadur Gurung", role: "Bajura Representative", image: "/images/our-team/team9.jpeg" },
+                { id: 5, name: "Yeshi Sangmo", role: "Limi Representative", image: "/images/our-team/team5.jpeg" },
+                { id: 6, name: "Dickey Choedon", role: "Limi Representative", image: "/images/our-team/team6.jpeg" },
+                { id: 7, name: "Pema Ringjin", role: "Namkha Representative", image: "/images/our-team/team7.jpeg" },
+                { id: 8, name: "Pema Gyaltsen", role: "Namkha Representative", image: "/images/our-team/team8.jpeg" },
+                { id: 9, name: "Maan B. Gurung", role: "Bajura Representative", image: "/images/our-team/team9.jpeg" },
               ].map((member) => (
                 <div key={member.id} className="team-member-card">
                   <div className="team-avatar-wrapper">
