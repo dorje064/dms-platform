@@ -33,45 +33,6 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* Our Team */}
-        <section className="mb-large">
-          <div className="glass-card">
-            <h2 className="section-title mb-4 text-center">Our Team</h2>
-            <p className="text-center section-description mb-8">
-              Meet the dedicated team members leading DMS with compassion and commitment.
-            </p>
-
-            <div className="team-grid">
-              {[
-                { id: 1, name: "Tenzin Dorje", role: "President", image: "/images/team-1.jpg" },
-                { id: 2, name: "Lhakpa Sherpa", role: "Vice President", image: "/images/team-2.jpg" },
-                { id: 3, name: "Pema Youdon", role: "Secretary", image: "/images/team-3.jpg" },
-                { id: 4, name: "Sonam Wangdi", role: "Treasurer", image: "/images/team-4.jpg" },
-                { id: 5, name: "Karma Tsering", role: "Youth Coordinator", image: "/images/team-5.jpg" },
-                { id: 6, name: "Dolma Sangmo", role: "Public Relations", image: "/images/team-6.jpg" },
-                { id: 7, name: "Ngawang Rigzin", role: "Cultural Advisor", image: "/images/team-7.jpg" },
-                { id: 8, name: "Tashi Lhamo", role: "Event Manager", image: "/images/team-8.jpg" },
-                { id: 9, name: "Choying Drolma", role: "Community Liaison", image: "/images/team-9.jpg" },
-              ].map((member) => (
-                <div key={member.id} className="team-member-card">
-                  <div className="team-avatar-wrapper">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="img-cover"
-                    />
-                  </div>
-                  <div className="team-info">
-                    <h4 className="team-name">{member.name}</h4>
-                    <p className="team-role">{member.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Purpose */}
         <section className="mb-large">
           <div className="glass-card">
@@ -205,6 +166,46 @@ export default function AboutUsPage() {
             </div>
           </div>
         </section>
+
+        {/* Our Team */}
+        <section className="mb-large">
+          <div className="glass-card">
+            <h2 className="section-title mb-4 text-center">Our Team</h2>
+            <p className="text-center section-description mb-8">
+              Meet the dedicated team members leading DMS with compassion and commitment.
+            </p>
+            <div className="team-grid">
+              {[
+                { id: 0, name: "Pema Delek Lama", role: "Founder", image: "/images/our-team/team0.jpeg" },
+                { id: 1, name: "Norbu Tenzing Lama", role: "Coordinator", image: "/images/our-team/team1.jpeg" },
+                { id: 2, name: "Prem Lama", role: "Nyinba Representative", image: "/images/our-team/team2.jpeg" },
+                { id: 3, name: "Sonam Wangmo Lama", role: "Nyinba Representative", image: "/images/our-team/team3.jpeg" },
+                { id: 4, name: "Sumnina Gurung", role: "Bajura Representative", image: "/images/our-team/team4.jpeg" },
+                { id: 5, name: "Yeshi Sangmo Lama", role: "Limi Representative", image: "/images/our-team/team5.jpeg" },
+                { id: 6, name: "Dickey Choedon Lama", role: "Limi Representative", image: "/images/our-team/team6.jpeg" },
+                { id: 7, name: "Pema Ringjin lama", role: "Namkha Representative", image: "/images/our-team/team7.jpeg" },
+                { id: 8, name: "Pema gyaltsen lama", role: "Namkha Representative", image: "/images/our-team/team8.jpeg" },
+                { id: 9, name: "Maan Bahadur Gurung", role: "Bajura Representative", image: "/images/our-team/team9.jpeg" },
+              ].map((member) => (
+                <div key={member.id} className="team-member-card">
+                  <div className="team-avatar-wrapper">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="img-cover"
+                    />
+                  </div>
+                  <div className="team-info">
+                    <h4 className="team-name">{member.name}</h4>
+                    <p className="team-role">{member.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
 
         {/* Future Vision */}
         <section className="mb-large">
