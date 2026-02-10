@@ -70,11 +70,11 @@ export default function AboutUsPage() {
             <div className="regions-grid">
               {[
                 { id: 1, name: "Yultsho Dhun", image: "/images/region-yultsho.jpg", description: "Traditional highland village" },
-                { id: 2, name: "Drukchu Lung", image: "/images/region-drukchu.jpg", description: "Riverside community" },
+                { id: 2, name: "Drukchu Lung", image: "/images/villages/druk-chulung.jpeg", description: "Riverside community" },
                 { id: 3, name: "Nyin", image: "/images/region-nyin.jpg", description: "Mountain settlement" },
-                { id: 4, name: "Chang", image: "/images/region-chang.jpg", description: "Historic village center" },
-                { id: 5, name: "Limi", image: "/images/region-limi.jpg", description: "Remote mountain valley" },
-                { id: 6, name: "Bhalu-Drukpa", image: "/images/region-bhalu.jpg", description: "Shi, Sum, Chungnyi villages" },
+                { id: 4, name: "Chang", image: "/images/region-chang.jpeg", description: "Historic village center" },
+                { id: 5, name: "Limi", image: "/images/villages/limi.jpeg", description: "Remote mountain valley" },
+                { id: 6, name: "Bhalu-Drukpa", image: "/images/villages/bajura.jpeg", description: "Shi, Sum, Chungnyi villages" },
               ].map((region) => (
                 <div key={region.id} className="region-card">
                   <div className="region-image-wrapper">
