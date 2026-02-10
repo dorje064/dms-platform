@@ -33,6 +33,34 @@ export default function AboutUsPage() {
           </div>
         </section>
 
+        {/* Founder Section */}
+        <section className="mb-large">
+          <div className="glass-card">
+            <div className="founder-section">
+              <div className="founder-image-wrapper">
+                <Image
+                  src="/images/founder.jpeg"
+                  alt="Founder"
+                  width={300}
+                  height={300}
+                  className="founder-image"
+                />
+              </div>
+              <div className="founder-content">
+                <span className="subtitle">From Our Founder</span>
+                <h2 className="section-title mb-4">A Message of Unity</h2>
+                <blockquote className="founder-quote">
+                  "Through compassion and collective effort, we honor our heritage while building a future where every student has the opportunity to learn, grow, and carry forward the precious teachings of Dharma."
+                </blockquote>
+                <div className="founder-info">
+                  <h4 className="founder-name">Degyal Rinpoche</h4>
+                  <p className="founder-role">Founder & Spiritual Director</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Purpose */}
         <section className="mb-large">
           <div className="glass-card">
