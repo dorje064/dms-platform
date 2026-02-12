@@ -46,9 +46,9 @@ const TOP_DONORS = [
   },
   {
     id: 6,
-    name: "",
+    name: "Pema Mugtup",
     amount: "NPR 15,005",
-    image: "/images/donors/kunsang-tashi.jpeg",
+    image: "/images/donors/pama-mugtup.jpeg",
     location: "Nyin",
     message: "Investing in the future of our community's youth."
   },
