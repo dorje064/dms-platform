@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Navbar } from '../components/navbar';
+import { ContactForm } from '../components/contactForm';
 
 // Placeholder data for Top Donors - Replace with real data
 const TOP_DONORS = [
@@ -32,7 +33,7 @@ const TOP_DONORS = [
     id: 4,
     name: "Lakha Thapa",
     amount: "NPR 15,500",
-    image: "/images/donor-placeholder-1.jpg",
+    image: "/images/donors/lakha-thapa.jpeg",
     location: "Namkha",
     message: "Dedicated to empowering future generations through education."
   },
@@ -159,74 +160,7 @@ export default function Page() {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <form className="contact-form glass-card-dark">
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="name">Full Name *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="form-input"
-                    placeholder="Enter your full name"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email Address *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="form-input"
-                    placeholder="your.email@example.com"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="form-input"
-                    placeholder="+977 9800000000"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="subject">Subject *</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    className="form-input"
-                    placeholder="What is this about?"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Message *</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  className="form-textarea"
-                  rows={6}
-                  placeholder="Tell us how we can help you..."
-                  required
-                ></textarea>
-              </div>
-
-              <div className="form-actions">
-                <button type="submit" className="btn btn-large">
-                  Send Message
-                </button>
-              </div>
-            </form>
+            <ContactForm />
           </div>
 
           {/* Contact Info */}
