@@ -122,7 +122,7 @@ export default function Page() {
             </p>
           </div>
 
-          <div className="grid-5-donors">
+          <div className="donors-horizontal-scroll">
             {TOP_DONORS.map((donor) => (
               <div key={donor.id} className="donor-card-compact">
                 <div className="donor-image-circle">

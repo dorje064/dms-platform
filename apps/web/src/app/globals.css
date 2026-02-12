@@ -868,6 +868,51 @@ a {
   color: var(--accent-gold);
 }
 
+/* Horizontal Scrolling Donors */
+.donors-horizontal-scroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0 2rem;
+  margin: 0 -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.donors-horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.donors-horizontal-scroll::-webkit-scrollbar-track {
+  background: rgba(15, 61, 104, 0.1);
+  border-radius: 10px;
+}
+
+.donors-horizontal-scroll::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 10px;
+}
+
+.donors-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+.donors-horizontal-scroll .donor-card-compact {
+  flex: 0 0 auto;
+  width: 180px;
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.donors-horizontal-scroll .donor-card-compact:hover {
+  transform: translateY(-5px);
+}
+
+
 /* Contact Form Section */
 .bg-gradient {
   background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
@@ -1630,3 +1675,42 @@ a {
 
 .animate-float { animation: float 6s ease-in-out infinite; }
 
+/* View Document Button */
+.view-document-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #0f3d68 0%, #1a5c9a 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(15, 61, 104, 0.25);
+  font-family: var(--font-body);
+}
+
+.view-document-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(15, 61, 104, 0.35);
+  background: linear-gradient(135deg, #1a5c9a 0%, #0f3d68 100%);
+}
+
+.view-document-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(15, 61, 104, 0.3);
+}
+
+.view-document-btn svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .view-document-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,7 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../../components/navbar';
+import { PDFModal } from '../../components/pdf-modal';
 
 export default function AboutUsPage() {
+  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   return (
     <div className="page-wrapper">
       <Navbar />
@@ -192,6 +197,23 @@ export default function AboutUsPage() {
                 ))}
               </div>
             </div>
+
+            {/* View Governance Document Button */}
+            <div className="text-center mt-8">
+              <button
+                onClick={() => setIsPdfModalOpen(true)}
+                className="view-document-btn"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+                View Governance Document
+              </button>
+            </div>
           </div>
         </section>
 
@@ -257,6 +279,14 @@ export default function AboutUsPage() {
           <p className="small-text opacity-50">A non-political, non-profit community initiative.</p>
         </div>
       </footer>
+
+      {/* PDF Modal */}
+      <PDFModal
+        isOpen={isPdfModalOpen}
+        onClose={() => setIsPdfModalOpen(false)}
+        pdfBasePath="/pdfs"
+        title="Governance & Model Document"
+      />
     </div>
   );
 }
