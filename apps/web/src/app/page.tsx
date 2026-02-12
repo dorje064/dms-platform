@@ -6,42 +6,58 @@ import { Navbar } from '../components/navbar';
 const TOP_DONORS = [
   {
     id: 1,
-    name: "Donor Name 1",
-    amount: "NPR 500,000",
-    image: "/images/donor-placeholder-1.jpg",
-    location: "Location",
+    name: "Tsering Ngetup Lama",
+    amount: "NPR 25,005",
+    image: "/images/donors/tsering-ngutup.jpeg",
+    location: "Nyin",
     message: "Supporting education and preserving our cultural heritage."
   },
   {
     id: 2,
-    name: "Donor Name 2",
-    amount: "NPR 300,000",
-    image: "/images/donor-placeholder-2.jpg",
-    location: "Location",
+    name: "Norbu Angdu Lama",
+    amount: "NPR 20,000",
+    image: "/images/donors/nurbu-wangdu.jpeg",
+    location: "Nyin",
     message: "Committed to helping students achieve their dreams."
   },
   {
     id: 3,
-    name: "Donor Name 3",
-    amount: "NPR 250,000",
+    name: "Chhapal Dorje",
+    amount: "NPR 15,500",
     image: "/images/donor-placeholder-3.jpg",
-    location: "Location",
+    location: "Namkha",
     message: "Honoring the legacy of His Holiness Degyal Rinpoche."
   },
   {
     id: 4,
-    name: "Donor Name 4",
-    amount: "NPR 200,000",
+    name: "Lakha Thapa",
+    amount: "NPR 15,500",
     image: "/images/donor-placeholder-1.jpg",
-    location: "Location",
+    location: "Namkha",
     message: "Dedicated to empowering future generations through education."
   },
   {
     id: 5,
-    name: "Donor Name 5",
-    amount: "NPR 150,000",
-    image: "/images/donor-placeholder-2.jpg",
-    location: "Location",
+    name: "Kunchong Tashi",
+    amount: "NPR 15,005",
+    image: "/images/donors/kunsang-tashi.jpeg",
+    location: "Nyin",
+    message: "Investing in the future of our community's youth."
+  },
+  {
+    id: 6,
+    name: "",
+    amount: "NPR 15,005",
+    image: "/images/donors/kunsang-tashi.jpeg",
+    location: "Nyin",
+    message: "Investing in the future of our community's youth."
+  },
+  {
+    id: 7,
+    name: "Chhakka Bahadhur Lama",
+    amount: "NPR 15,005",
+    image: "/images/donors/chhakka-bahadur.jpeg",
+    location: "Nyin",
     message: "Investing in the future of our community's youth."
   }
 ];
