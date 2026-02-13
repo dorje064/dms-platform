@@ -38,6 +38,22 @@
         "production": {
           "outputPath": "dist/apps/web"
         }
+      },
+      "dependsOn": [
+        {
+          "target": "copy-public-assets",
+          "params": "forward"
+        }
+      ]
+    },
+    "copy-public-assets": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": [
+          "mkdir -p dist/apps/web/public",
+          "cp -r apps/web/public dist/apps/web/"
+        ],
+        "parallel": false
       }
     },
     "start": {
