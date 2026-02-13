@@ -1,5 +1,6 @@
 import { Navbar } from "../../components/navbar";
 import { DataTable, AvatarNameCell, StatusBadge } from "../../components/DataTable";
+import { Footer } from "../../components/footer";
 
 // Mock Data
 const MOCK_STUDENTS = [
@@ -88,11 +89,7 @@ export default function StudentsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="footer mt-auto">
-        <div className="container text-center pt-8 pb-8">
-          <p className="small-text opacity-50">&copy; {new Date().getFullYear()} Degyal Memorial Society.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

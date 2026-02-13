@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Navbar } from '../../components/navbar';
 import { PDFModal } from '../../components/pdf-modal';
+import { Footer } from '../../components/footer';
 
 export default function AboutUsPage() {
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
@@ -273,12 +274,7 @@ export default function AboutUsPage() {
       </main>
 
       {/* Footer */}
-      <footer className="footer mt-auto">
-        <div className="container text-center pt-8 pb-8">
-          <p className="small-text opacity-50">&copy; {new Date().getFullYear()} Degyal Memorial Society. All rights reserved.</p>
-          <p className="small-text opacity-50">A non-political, non-profit community initiative.</p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* PDF Modal */}
       <PDFModal
