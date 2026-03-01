@@ -20,7 +20,6 @@ import { DonorsModule } from '../modules/donors/donors.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
-        timestamps: true,
       }),
       inject: [ConfigService],
     }),
