@@ -1,57 +1,64 @@
-import { Navbar } from "../../components/navbar";
-import { DataTable, AvatarNameCell, StatusBadge } from "../../components/DataTable";
-import { Footer } from "../../components/footer";
+import { Navbar } from '../../components/navbar';
+import { DataTable, AvatarNameCell, StatusBadge } from '../../components/DataTable';
+import { Footer } from '../../components/footer';
+import { getStudents, Student } from '../../lib/api';
 
-// Mock Data
-const MOCK_STUDENTS = [
-  { id: 1, name: "Tenzin Dorjee", grade: "Grade 11", school: "Namkha Khyung Dzong School", region: "Yultsho Dhun", status: "Active", avatar: "" },
-  { id: 2, name: "Pema Sherpa", grade: "Grade 12", school: "Himalayan Model School", region: "Limi", status: "Active", avatar: "" },
-  { id: 3, name: "Karma Lhamo", grade: "Bachelor 1st Year", school: "Trinity College", region: "Global", status: "Pending", avatar: "" },
-  { id: 4, name: "Dorje Gyaltsen", grade: "Grade 11", school: "Namkha Khyung Dzong School", region: "Nyin", status: "Active", avatar: "" },
-  { id: 5, name: "Yangchen Dolma", grade: "Grade 12", school: "Golden Gate Box", region: "Chang", status: "Active", avatar: "" },
-  { id: 6, name: "Pasang Norbu", grade: "Bachelor 2nd Year", school: "St. Xaviers", region: "Bhalu-Drukpa", status: "Graduated", avatar: "" },
-  { id: 7, name: "Tashi Wangmo", grade: "Grade 11", school: "Namkha Khyung Dzong School", region: "Drukchu Lung", status: "Active", avatar: "" },
-  { id: 8, name: "Sonam Tsering", grade: "Grade 12", school: "Bernhardt College", region: "Yultsho Dhun", status: "Active", avatar: "" },
-  { id: 9, name: "Dawa Phuti", grade: "Bachelor 1st Year", school: "Islington College", region: "Limi", status: "Pending", avatar: "" },
-  { id: 10, name: "Ngawang Chodrak", grade: "Grade 11", school: "Namkha Khyung Dzong School", region: "Nyin", status: "Active", avatar: "" },
-];
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 
-export default function StudentsPage() {
+export const metadata = {
+  title: 'Student Beneficiaries | Degyal Memorial Society',
+  description: 'List of students currently supported by the Degyal Memorial Society.',
+};
+
+export default async function StudentsPage() {
+  let students: Student[] = [];
+  let total = 0;
+
+  try {
+    const res = await getStudents({ limit: 50 });
+    students = res.data ?? [];
+    total = res.total ?? students.length;
+  } catch (err) {
+    console.error('Failed to fetch students from API:', err);
+    // Fallback to empty list — API may not be running
+  }
+
   const columns = [
     {
       header: 'Student',
       accessor: 'custom' as const,
-      render: (student: typeof MOCK_STUDENTS[0]) => (
+      render: (student: Student) => (
         <AvatarNameCell
           name={student.name}
           subtitle={student.grade}
-          avatarUrl={student.avatar}
+          avatarUrl={student.avatar ?? ''}
         />
       ),
-      width: '25%'
+      width: '25%',
     },
     {
       header: 'School/Institution',
       accessor: 'school' as const,
-      width: '30%'
+      width: '30%',
     },
     {
       header: 'Region',
       accessor: 'region' as const,
-      width: '20%'
+      width: '20%',
     },
     {
       header: 'Status',
       accessor: 'custom' as const,
-      render: (student: typeof MOCK_STUDENTS[0]) => {
-        const variant = student.status === 'Active' ? 'success'
-          : student.status === 'Pending' ? 'warning'
-            : student.status === 'Graduated' ? 'info'
-              : 'default';
+      render: (student: Student) => {
+        const variant =
+          student.status === 'Active' ? 'success'
+            : student.status === 'Pending' ? 'warning'
+              : student.status === 'Graduated' ? 'info'
+                : 'default';
         return <StatusBadge status={student.status} variant={variant} />;
       },
-      width: '15%'
-    }
+      width: '15%',
+    },
   ];
 
   return (
@@ -75,14 +82,14 @@ export default function StudentsPage() {
           <div className="table-header-section">
             <div>
               <h3 className="table-title">Registered Students</h3>
-              <p className="table-subtitle">Total students: {MOCK_STUDENTS.length}</p>
+              <p className="table-subtitle">Total students: {total}</p>
             </div>
             <button className="btn btn-sm">Register New Student</button>
           </div>
 
           <DataTable
             columns={columns}
-            data={MOCK_STUDENTS}
+            data={students}
             emptyMessage="No students registered yet"
           />
         </div>
@@ -93,4 +100,3 @@ export default function StudentsPage() {
     </div>
   );
 }
-
