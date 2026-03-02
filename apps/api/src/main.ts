@@ -12,10 +12,20 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  // CORS for Next.js web app
+  // CORS — allow web (3000) and backoffice (4201) in dev; read from env in production
+  const rawOrigins = process.env['CORS_ORIGINS'];
+  const allowedOrigins = rawOrigins
+    ? rawOrigins.split(',').map((o) => o.trim())
+    : [
+      'http://localhost:3000', // Next.js web app
+      'http://localhost:4200', // Vite fallback
+      'http://localhost:4201', // React backoffice (bo)
+    ];
+
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:4200'],
+    origin: allowedOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
   });
 
