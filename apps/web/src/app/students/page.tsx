@@ -2,6 +2,7 @@ import { Navbar } from '../../components/navbar';
 import { DataTable, AvatarNameCell, StatusBadge } from '../../components/DataTable';
 import { Footer } from '../../components/footer';
 import { getStudents, Student } from '../../lib/api';
+import Link from 'next/link';
 
 export const revalidate = 60; // ISR: revalidate every 60 seconds
 
@@ -84,7 +85,9 @@ export default async function StudentsPage() {
               <h3 className="table-title">Registered Students</h3>
               <p className="table-subtitle">Total students: {total}</p>
             </div>
-            <button className="btn btn-sm">Register New Student</button>
+            <Link href="/students/register" className="btn btn-sm">
+              + Register New Student
+            </Link>
           </div>
 
           <DataTable

@@ -44,11 +44,8 @@ export class StudentsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'superadmin')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new student (admin only)' })
-  @ApiResponse({ status: 201, description: 'Student created' })
+  @ApiOperation({ summary: 'Register a new student (public)' })
+  @ApiResponse({ status: 201, description: 'Student registered — status defaults to Pending' })
   create(@Body() dto: CreateStudentDto) {
     return this.studentsService.create(dto);
   }

@@ -12,7 +12,9 @@ import { DonorsModule } from '../modules/donors/donors.module';
     // Environment config
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      // Nx runs from monorepo root → 'apps/api/.env'
+      // Direct run from api dir → '.env'
+      envFilePath: ['apps/api/.env', '.env'],
     }),
 
     // MongoDB connection
