@@ -13,7 +13,7 @@ interface DataTableProps<T> {
   emptyMessage?: string;
 }
 
-export function DataTable<T extends { id: number | string }>({
+export function DataTable<T extends { id?: number | string; _id?: string }>({
   columns,
   data,
   emptyMessage = "No data available"
@@ -42,8 +42,8 @@ export function DataTable<T extends { id: number | string }>({
                 </td>
               </tr>
             ) : (
-              data.map((row) => (
-                <tr key={row.id}>
+              data.map((row, rowIndex) => (
+                <tr key={(row as { _id?: string; id?: number | string })._id ?? (row as { id?: number | string }).id ?? rowIndex}>
                   {columns.map((column, colIndex) => (
                     <td key={colIndex}>
                       {column.render

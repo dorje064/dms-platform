@@ -46,3 +46,19 @@ Thumbs.db
 out
 deploy-package
 web-deploy.tar.gz
+
+# Environment variables — never commit secrets
+.env
+.env.local
+.env*.local
+# Allow the example template
+!.env.example
+
+# Explicit app env files (in case already tracked)
+apps/api/.env
+apps/web/.env.local
+apps/bo/.env
+*/*/.env
+
+
+vite.config.*.timestamp*
