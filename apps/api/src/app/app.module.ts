@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from '../modules/auth/auth.module';
 import { StudentsModule } from '../modules/students/students.module';
 import { DonorsModule } from '../modules/donors/donors.module';
+import { UploadModule } from '../modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DonorsModule } from '../modules/donors/donors.module';
     AuthModule,
     StudentsModule,
     DonorsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
