@@ -87,6 +87,7 @@ export function AvatarNameCell({ name, avatarUrl, subtitle }: AvatarNameCellProp
             src={avatarUrl}
             alt={name}
             fill
+            sizes="48px"
             className="img-cover"
           />
         ) : (

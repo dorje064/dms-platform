@@ -1,16 +1,21 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
+import { UPLOAD_DIR, UPLOAD_URL_PREFIX } from './modules/upload/upload.constants';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Global prefix
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // Serve uploaded images statically (outside the /api prefix)
+  app.useStaticAssets(UPLOAD_DIR, { prefix: `${UPLOAD_URL_PREFIX}/` });
 
   // CORS — allow web (3000) and backoffice (4201) in dev; read from env in production
   const rawOrigins = process.env['CORS_ORIGINS'];
