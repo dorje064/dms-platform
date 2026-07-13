@@ -1,0 +1,160 @@
+# Build & push changed app images to GHCR, then bump their tags on the
+# `gitops` branch (which triggers the deploy workflow).
+#
+# Path-filtered: a change under apps/<app>/** builds only that image.
+# A change to shared inputs (libs/shared, lockfile, root TS/Nx config)
+# rebuilds all three, since every image depends on them.
+#
+# GitOps contract: tags are written to `image-tags.env` on the `gitops`
+# branch as API_IMAGE_TAG / WEB_IMAGE_TAG / BO_IMAGE_TAG (short commit SHA).
+name: Build & Push
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      build_all:
+        description: Force-build all three images
+        type: boolean
+        default: false
+
+# Queue runs (don't cancel) so tag bumps to the gitops branch can't race.
+concurrency:
+  group: dms-build
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.decide.outputs.api }}
+      web: ${{ steps.decide.outputs.web }}
+      bo: ${{ steps.decide.outputs.bo }}
+      sha_short: ${{ steps.vars.outputs.sha_short }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Short SHA
+        id: vars
+        run: echo "sha_short=${GITHUB_SHA:0:7}" >> "$GITHUB_OUTPUT"
+
+      - name: Detect changed apps
+        if: github.event_name == 'push'
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            # Shared inputs → rebuild ALL three images. Any non-app change to
+            # package.json / package-lock.json or a .ts file (root or libs)
+            # affects every image. App-local .ts changes are NOT here — they're
+            # caught by the per-app apps/<app>/** filters below.
+            shared: &shared
+              - 'package.json'
+              - 'package-lock.json'
+              - 'nx.json'
+              - 'tsconfig*.json'
+              - 'libs/**'
+              - '*.ts'
+            api:
+              - *shared
+              - 'apps/api/**'
+            web:
+              - *shared
+              - 'apps/web/**'
+            bo:
+              - *shared
+              - 'apps/bo/**'
+
+      - name: Decide what to build
+        id: decide
+        run: |
+          api='${{ steps.filter.outputs.api }}'
+          web='${{ steps.filter.outputs.web }}'
+          bo='${{ steps.filter.outputs.bo }}'
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.build_all }}" = "true" ]; then
+            api=true; web=true; bo=true
+          fi
+          echo "api=${api:-false}" >> "$GITHUB_OUTPUT"
+          echo "web=${web:-false}" >> "$GITHUB_OUTPUT"
+          echo "bo=${bo:-false}"   >> "$GITHUB_OUTPUT"
+          echo "Will build -> api=${api:-false} web=${web:-false} bo=${bo:-false}"
+
+  api:
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    uses: ./.github/workflows/_build-image.yml
+    with:
+      app: api
+      dockerfile: apps/api/Dockerfile
+      tag: ${{ needs.changes.outputs.sha_short }}
+
+  web:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    uses: ./.github/workflows/_build-image.yml
+    with:
+      app: web
+      dockerfile: apps/web/Dockerfile
+      tag: ${{ needs.changes.outputs.sha_short }}
+      # Public API URL is baked into the browser bundle at build time.
+      build_args: NEXT_PUBLIC_API_URL=${{ vars.WEB_API_URL || 'https://api-dms.sumedhsakya.com.np/api' }}
+
+  bo:
+    needs: changes
+    if: needs.changes.outputs.bo == 'true'
+    uses: ./.github/workflows/_build-image.yml
+    with:
+      app: bo
+      dockerfile: apps/bo/Dockerfile
+      tag: ${{ needs.changes.outputs.sha_short }}
+      build_args: VITE_API_BASE_URL=${{ vars.BO_API_URL || 'https://api-dms.sumedhsakya.com.np/api' }}
+
+  bump:
+    # Bump tags for the apps that changed, once all their builds succeeded.
+    needs: [changes, api, web, bo]
+    if: >-
+      always() &&
+      (needs.changes.outputs.api == 'true' || needs.changes.outputs.web == 'true' || needs.changes.outputs.bo == 'true') &&
+      (needs.changes.outputs.api != 'true' || needs.api.result == 'success') &&
+      (needs.changes.outputs.web != 'true' || needs.web.result == 'success') &&
+      (needs.changes.outputs.bo  != 'true' || needs.bo.result  == 'success')
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.changes.outputs.sha_short }}
+      TAG_FILE: image-tags.env
+    steps:
+      - name: Checkout gitops branch
+        uses: actions/checkout@v4
+        with:
+          ref: gitops
+          # PAT (not GITHUB_TOKEN) so the resulting push triggers deploy.yml.
+          token: ${{ secrets.GITOPS_PAT }}
+
+      - name: Bump image tag(s)
+        run: |
+          set -euo pipefail
+          touch "$TAG_FILE"
+          update() {
+            if grep -q "^$1=" "$TAG_FILE"; then
+              sed -i "s|^$1=.*|$1=$TAG|" "$TAG_FILE"
+            else
+              echo "$1=$TAG" >> "$TAG_FILE"
+            fi
+          }
+          [ "${{ needs.changes.outputs.api }}" = "true" ] && update API_IMAGE_TAG || true
+          [ "${{ needs.changes.outputs.web }}" = "true" ] && update WEB_IMAGE_TAG || true
+          [ "${{ needs.changes.outputs.bo }}"  = "true" ] && update BO_IMAGE_TAG  || true
+          echo "----- $TAG_FILE -----"; cat "$TAG_FILE"
+
+      - name: Commit & push
+        run: |
+          set -euo pipefail
+          git config user.name "dms-ci[bot]"
+          git config user.email "dms-ci[bot]@users.noreply.github.com"
+          git add "$TAG_FILE"
+          if git diff --cached --quiet; then
+            echo "No tag changes to commit."; exit 0
+          fi
+          git commit -m "deploy: bump image tag(s) to ${TAG}"
+          git push origin gitops

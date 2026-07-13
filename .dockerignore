@@ -1,0 +1,40 @@
+# Keep the Docker build context small & reproducible.
+# Dependencies are reinstalled inside the image from package-lock.json.
+node_modules
+**/node_modules
+
+# Build outputs (rebuilt inside the image)
+dist
+tmp
+out-tsc
+**/.next
+coverage
+
+# VCS & CI
+.git
+.gitignore
+.github
+
+# Nx local cache & daemon
+.nx
+.cursor
+
+# Editors
+.vscode
+.idea
+
+# Secrets — never bake env files into images (build args carry public vars)
+**/.env
+**/.env.*
+!**/.env.sample
+
+# Runtime user content (mounted as a volume at runtime)
+apps/api/uploads
+
+# Tests / reports / misc
+**/playwright-report
+**/test-output
+**/*.log
+Dockerfile
+**/Dockerfile
+.dockerignore

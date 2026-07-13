@@ -1,0 +1,67 @@
+# Reusable workflow: build one app's Docker image and push it to GHCR.
+# Called by build.yml once per changed app. Not triggered on its own.
+name: _build-image
+
+on:
+  workflow_call:
+    inputs:
+      app:
+        description: App name / image suffix (api | web | bo)
+        required: true
+        type: string
+      dockerfile:
+        description: Path to the app's Dockerfile
+        required: true
+        type: string
+      tag:
+        description: Image tag (short commit SHA)
+        required: true
+        type: string
+      build_args:
+        description: Newline-separated KEY=value build args (baked at build time)
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  build:
+    # GitHub-hosted arm64 Linux runner → native linux/arm64 builds for the
+    # aarch64 VM, no QEMU, no self-hosted runner. NOTE: arm64 hosted runners are
+    # free for public repos; private repos require a paid plan / billing enabled.
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute lowercase image name
+        id: img
+        # GHCR requires a lowercase image path; owner may contain uppercase.
+        run: |
+          owner=$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "name=ghcr.io/$owner/dms-${{ inputs.app }}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ inputs.dockerfile }}
+          push: true
+          platforms: linux/arm64
+          build-args: ${{ inputs.build_args }}
+          tags: ${{ steps.img.outputs.name }}:${{ inputs.tag }}
+          # Link the package to this repo so it's discoverable & permissioned.
+          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          # GHA layer cache — big speedup on the 1-vCPU-equivalent free runners.
+          cache-from: type=gha,scope=dms-${{ inputs.app }}
+          cache-to: type=gha,mode=max,scope=dms-${{ inputs.app }}
