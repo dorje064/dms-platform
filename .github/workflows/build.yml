@@ -24,6 +24,14 @@ concurrency:
   group: dms-build
   cancel-in-progress: false
 
+# The reusable _build-image.yml requests `packages: write` to push to GHCR.
+# A called workflow can never exceed the caller's token grant, and the repo
+# default is read-only — so the caller must grant it here or the run is
+# rejected as "Invalid workflow file".
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   changes:
     runs-on: ubuntu-latest
