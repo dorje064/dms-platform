@@ -1,0 +1,115 @@
+# =============================================================================
+# DMS Platform — runtime stack for the single OCI VM (aarch64/arm64).
+#
+# GitOps: image tags live in image-tags.env and are bumped by the build
+# workflow (.github/workflows/build.yml `bump` job on the `main` branch),
+# which commits to THIS `gitops` branch and triggers deploy.yml.
+#
+# Deploy runs on the VM (from /opt/dms):
+#   docker compose --env-file image-tags.env pull
+#   docker compose --env-file image-tags.env up -d
+#
+# Secrets: api.env is rendered at deploy time from OCI Vault (instance
+# principal) — it is NOT committed to this branch.
+#
+# TLS: nginx-proxy + acme-companion issue/renew Let's Encrypt certs
+# automatically from each app's VIRTUAL_HOST / LETSENCRYPT_HOST.
+# =============================================================================
+
+services:
+  # ---- Edge reverse proxy (the only container publishing 80/443) -----------
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:1.6
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+
+  # ---- Let's Encrypt companion (issues & renews certs) ---------------------
+  acme-companion:
+    image: nginxproxy/acme-companion:2.5
+    container_name: acme-companion
+    restart: unless-stopped
+    environment:
+      # Override on the VM by adding ACME_EMAIL to image-tags.env if desired.
+      DEFAULT_EMAIL: ${ACME_EMAIL:-webmaster@sumedhsakya.com.np}
+      NGINX_PROXY_CONTAINER: nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - nginx-proxy
+    networks:
+      - proxy
+
+  # ---- API (NestJS) --------------------------------------------------------
+  api:
+    image: ghcr.io/you-dream-we-build/dms-api:${API_IMAGE_TAG:?set API_IMAGE_TAG in image-tags.env (run the build workflow)}
+    container_name: dms-api
+    restart: unless-stopped
+    # Runtime secrets rendered from OCI Vault at deploy time.
+    env_file:
+      - ./api.env
+    environment:
+      VIRTUAL_HOST: api-dms.sumedhsakya.com.np
+      VIRTUAL_PORT: "3333"
+      LETSENCRYPT_HOST: api-dms.sumedhsakya.com.np
+    expose:
+      - "3333"
+    volumes:
+      # Persist uploaded images across redeploys (path is process.cwd()/apps/api/uploads).
+      - api_uploads:/app/apps/api/uploads
+    networks:
+      - proxy
+
+  # ---- Web (Next.js standalone) -------------------------------------------
+  web:
+    image: ghcr.io/you-dream-we-build/dms-web:${WEB_IMAGE_TAG:?set WEB_IMAGE_TAG in image-tags.env (run the build workflow)}
+    container_name: dms-web
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: dms.sumedhsakya.com.np
+      VIRTUAL_PORT: "3000"
+      LETSENCRYPT_HOST: dms.sumedhsakya.com.np
+    expose:
+      - "3000"
+    networks:
+      - proxy
+
+  # ---- Backoffice (Vite SPA via nginx) ------------------------------------
+  bo:
+    image: ghcr.io/you-dream-we-build/dms-bo:${BO_IMAGE_TAG:?set BO_IMAGE_TAG in image-tags.env (run the build workflow)}
+    container_name: dms-bo
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: bo-dms.sumedhsakya.com.np
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: bo-dms.sumedhsakya.com.np
+    expose:
+      - "80"
+    networks:
+      - proxy
+
+volumes:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
+  api_uploads:
+
+networks:
+  proxy:
+    name: dms-proxy
