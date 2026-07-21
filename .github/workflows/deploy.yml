@@ -1,0 +1,51 @@
+# Deploy the compose stack to the OCI VM.
+# Triggered when the build workflow (on `main`) bumps a tag in image-tags.env
+# on this `gitops` branch, or on a compose change, or manually.
+#
+# Flow: copy the stack to the VM over SSH, then run deploy.sh ON the VM, which
+# fetches secrets from OCI Vault via instance principal (no creds in GitHub),
+# logs into GHCR, and runs `docker compose pull && up -d`.
+name: Deploy
+
+on:
+  push:
+    branches: [gitops]
+    paths:
+      - image-tags.env
+      - docker-compose.yml
+  workflow_dispatch:
+
+concurrency:
+  group: dms-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy stack to the VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: docker-compose.yml,image-tags.env,deploy.sh
+          target: /opt/dms
+
+      - name: Deploy on the VM
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -euo pipefail
+            cd /opt/dms
+            chmod +x deploy.sh
+            ./deploy.sh
