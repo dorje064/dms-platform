@@ -49,9 +49,9 @@
     "copy-public-assets": {
       "executor": "nx:run-commands",
       "options": {
-        "command": [
+        "commands": [
           "mkdir -p dist/apps/web/public",
-          "cp -r apps/web/public dist/apps/web/"
+          "cp -r apps/web/public/. dist/apps/web/public/"
         ],
         "parallel": false
       }
