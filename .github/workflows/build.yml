@@ -106,7 +106,7 @@ jobs:
       dockerfile: apps/web/Dockerfile
       tag: ${{ needs.changes.outputs.sha_short }}
       # Public API URL is baked into the browser bundle at build time.
-      build_args: NEXT_PUBLIC_API_URL=${{ vars.WEB_API_URL || 'https://api-dms.sumedhsakya.com.np/api' }}
+      build_args: NEXT_PUBLIC_API_URL=${{ vars.WEB_API_URL }}
 
   bo:
     needs: changes
@@ -116,7 +116,7 @@ jobs:
       app: bo
       dockerfile: apps/bo/Dockerfile
       tag: ${{ needs.changes.outputs.sha_short }}
-      build_args: VITE_API_BASE_URL=${{ vars.BO_API_URL || 'https://api-dms.sumedhsakya.com.np/api' }}
+      build_args: VITE_API_BASE_URL=${{ vars.BO_API_URL }}
 
   bump:
     # Bump tags for the apps that changed, once all their builds succeeded.
