@@ -41,7 +41,7 @@ services:
     restart: unless-stopped
     environment:
       # Override on the VM by adding ACME_EMAIL to image-tags.env if desired.
-      DEFAULT_EMAIL: ${ACME_EMAIL:-webmaster@sumedhsakya.com.np}
+      DEFAULT_EMAIL: ${ACME_EMAIL:-ssumedhiw@gmail.com}
       NGINX_PROXY_CONTAINER: nginx-proxy
     volumes:
       - certs:/etc/nginx/certs:rw
