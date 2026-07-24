@@ -3,8 +3,8 @@
 # on this `gitops` branch, or on a compose change, or manually.
 #
 # Flow: copy the stack to the VM over SSH, then run deploy.sh ON the VM, which
-# fetches secrets from OCI Vault via instance principal (no creds in GitHub),
-# logs into GHCR, and runs `docker compose pull && up -d`.
+# logs into GHCR (creds injected here from a GitHub variable + secret), and
+# runs `docker compose pull && up -d`. api.env is maintained by hand on the VM.
 name: Deploy
 
 on:
@@ -39,11 +39,16 @@ jobs:
 
       - name: Deploy on the VM
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          GHCR_USER: ${{ vars.GHCR_USER }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
+          # Forward the GHCR creds into the remote shell so deploy.sh can log in.
+          envs: GHCR_USER,GHCR_TOKEN
           script: |
             set -euo pipefail
             cd /opt/dms

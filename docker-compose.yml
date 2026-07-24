@@ -61,7 +61,7 @@ services:
     restart: unless-stopped
     # Runtime secrets rendered from OCI Vault at deploy time.
     env_file:
-      - ./api.env
+      - ./.api.env
     environment:
       VIRTUAL_HOST: api-dms.sumedhsakya.com.np
       VIRTUAL_PORT: "3333"
